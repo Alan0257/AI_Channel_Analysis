@@ -1,1 +1,241 @@
-<html></html>
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>台股財經分析｜節目精華速報</title>
+<style>
+  :root {
+    --bg:#0b0f1c;--bg2:#111627;--bg3:#18203a;
+    --border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.13);
+    --text:#dde2ef;--text2:#8b95ae;--text3:#4e566a;
+    --accent:#10b981;--accent-dim:rgba(16,185,129,0.12);
+    --green:#10b981;--green-dim:rgba(16,185,129,.12);
+    --red:#f87171;--red-dim:rgba(248,113,113,.12);
+    --amber:#fbbf24;--amber-dim:rgba(251,191,36,.12);
+    --fs-small:13px;--fs-normal:15px;--fs-large:18px;
+    --fs-body: var(--fs-normal);
+  }
+  body.font-small { --fs-body: var(--fs-small); }
+  body.font-normal { --fs-body: var(--fs-normal); }
+  body.font-large { --fs-body: var(--fs-large); }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;min-height:100vh;line-height:1.75;}
+
+  /* top bar */
+  .top-bar{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 clamp(1rem,4vw,2.5rem);position:sticky;top:0;z-index:50;}
+  .top-bar-inner{max-width:820px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:52px;gap:.75rem;}
+  .brand{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+  .brand-chip{padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;background:var(--accent-dim);color:var(--accent);border:1px solid var(--accent);opacity:.85;}
+  .brand-name{font-size:14px;font-weight:600;color:var(--text2);letter-spacing:.02em;}
+
+  /* 字體切換按鈕 */
+  .font-switcher{display:flex;align-items:center;gap:4px;margin-left:auto;}
+  .fs-btn{
+    padding:4px 10px;border-radius:5px;border:1px solid var(--border2);
+    background:transparent;color:var(--text3);cursor:pointer;
+    font-size:12px;font-family:inherit;transition:all .15s;
+    white-space:nowrap;
+  }
+  .fs-btn:hover{color:var(--text2);border-color:var(--accent);}
+  .fs-btn.active{background:var(--accent-dim);color:var(--accent);border-color:var(--accent);}
+
+  .meta-time{font-size:12px;color:var(--text3);display:flex;align-items:center;gap:6px;flex-shrink:0;}
+  .live-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 2.4s ease-in-out infinite;}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+
+  /* hero */
+  .hero{max-width:820px;margin:0 auto;padding:clamp(2rem,5vw,3.5rem) clamp(1rem,4vw,2.5rem) 1.5rem;}
+  .hero-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;display:flex;align-items:center;gap:10px;}
+  .hero-eyebrow::after{content:'';flex:1;height:1px;background:var(--accent);opacity:.25;max-width:120px;}
+  .hero-title{font-size:clamp(22px,5vw,32px);font-weight:800;color:var(--text);line-height:1.25;margin-bottom:10px;}
+  .hero-date{font-size:14px;color:var(--text2);}
+
+  .divider{max-width:820px;margin:0 auto;padding:0 clamp(1rem,4vw,2.5rem);}
+  .divider hr{border:none;border-top:1px solid var(--border);margin:1.5rem 0;}
+  .content{max-width:820px;margin:0 auto;padding:0 clamp(1rem,4vw,2.5rem) 3rem;display:flex;flex-direction:column;gap:1.25rem;}
+
+  /* card */
+  .card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;overflow:hidden;}
+  .card-header{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;}
+  .card-icon{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+  .card-icon.accent{background:var(--accent-dim);}
+  .card-icon.green{background:var(--green-dim);}
+  .card-icon.red{background:var(--red-dim);}
+  .card-icon.amber{background:var(--amber-dim);}
+  .card-title{font-size:14px;font-weight:600;color:var(--text);}
+
+  /* card-body 字體跟著 CSS var 走 */
+  .card-body{
+    padding:18px 20px;
+    font-size:var(--fs-body);
+    color:var(--text2);
+    line-height:1.9;
+    white-space:pre-wrap;
+    word-break:break-word;
+  }
+
+  /* 超連結樣式 */
+  .text-link{
+    color:var(--accent);
+    text-decoration:underline;
+    text-underline-offset:3px;
+    word-break:break-all;
+  }
+  .text-link:hover{opacity:.8;}
+
+  .info-row{display:flex;flex-wrap:wrap;gap:.75rem 1.5rem;padding:12px 18px;background:var(--bg3);border-bottom:1px solid var(--border);font-size:12px;color:var(--text3);}
+  .info-row span{display:flex;align-items:center;gap:5px;}
+  .info-row strong{color:var(--text2);font-weight:500;}
+  footer{border-top:1px solid var(--border);padding:1.25rem clamp(1rem,4vw,2.5rem);text-align:center;font-size:12px;color:var(--text3);max-width:820px;margin:0 auto;}
+
+  @media(max-width:480px){
+    .brand-name{display:none;}
+    .fs-btn{padding:4px 8px;}
+  }
+</style>
+</head>
+<body class="font-normal">
+
+<div class="top-bar">
+  <div class="top-bar-inner">
+    <div class="brand">
+      <span class="brand-chip">Program</span>
+      <span class="brand-name">台股財經分析</span>
+    </div>
+
+    <div class="font-switcher">
+      <button class="fs-btn" onclick="setFont('small')">小</button>
+      <button class="fs-btn active" onclick="setFont('normal')">中</button>
+      <button class="fs-btn" onclick="setFont('large')">大</button>
+    </div>
+
+    <div class="meta-time">
+      <span class="live-dot"></span>
+      2026/05/12 上午07:30
+    </div>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="hero-eyebrow">Program Highlights</div>
+  <h1 class="hero-title">節目精華速報</h1>
+  <p class="hero-date">2026-05-11｜節目產業趨勢</p>
+</div>
+<div class="divider"><hr></div>
+<div class="content">
+
+  <div class="card">
+    <div class="info-row">
+      <span>模式 <strong>weekday_2340</strong></span>
+      <span>更新 <strong>2026/05/12 上午07:30</strong></span>
+    </div>
+    <div class="card-header">
+      <div class="card-icon accent">🧭</div>
+      <span class="card-title">市場方向解析</span>
+    </div>
+    <div class="card-body">🎯《節目精華速報》  
+📅 2026-05-11｜節目產業趨勢  
+━━━━━━━━━━━  
+
+【第一則訊息｜🧭市場方向解析】  
+1️⃣ 本次整理之所有節目發布日期均為2026-05-11，符合條件。  
+
+2️⃣ 股市福利社：  
+- 台股短期微震盪屬正常，記憶體及IC設計族群氣勢強勁。  
+- 記憶體供應緊張持續至2028年，價格有再漲空間，力積電雖未立即表態，但技術面已見起色。  
+- 外資期貨空單偏重台積電最後一盤施壓，短線觀察大盤維持多頭格局。  
+- 投信與外資仍積極買入相關弱勢板塊，主動型ETF吸引資金流入。  
+影片連結：<a href="https://youtube.com/watch?v=AlyX5mau" target="_blank" rel="noopener noreferrer" class="text-link">https://youtube.com/watch?v=AlyX5mau</a>1FU  
+
+錢線百分百：  
+- 台股4萬點高位震盪，實務操作建議往基本面良好與評價低位的中小型股布局，尤其科技、軍工、低軌衛星與安控等政策受惠族群。  
+- 外資整體逢高調節，偏保守態度，主力籌碼流向以記憶體等相關族群為主；主動型ETF資金活絡推升台股持續向上。  
+- 評估美國即將人事變動（華許接任Fed主席），預期貨幣政策可能趨寬鬆，有助中長線行情。  
+- 台股多頭仍強，520行情重點在選股，資金結構有利產業成長股，外資期貨空單偏重台積電，但市場整體多頭氣息未逆轉。  
+影片連結：<a href="https://youtube.com/watch?v=qMM" target="_blank" rel="noopener noreferrer" class="text-link">https://youtube.com/watch?v=qMM</a>0Bat9vlY</div>
+  </div>
+
+  <div class="card">
+    <div class="info-row">
+      <span>模式 <strong>weekday_2340</strong></span>
+      <span>更新 <strong>2026/05/12 上午07:30</strong></span>
+    </div>
+    <div class="card-header">
+      <div class="card-icon amber">🔥</div>
+      <span class="card-title">節目重點整理</span>
+    </div>
+    <div class="card-body">3️⃣ 股市福利社主題：「記憶體瘋漲.IC設計太飆.誰是下一個翻倍股」  
+- 記憶體市場缺貨持續至2028年，價格有堅挺基礎，群聯、南亞科、華邦電多檔記憶體股強勢漲停。  
+- IC設計族群續旺，聯發科帶頭衝刺，創意、世芯-KY等IP概念股定位為後市焦點。  
+- 大盤短線盤整屬健康利多整理，外資態度保守但本土資金活躍。  
+看多股票：聯發科（2454）、群聯（8299）、創意（3443）、世芯-KY（3661）、南亞科（2408）、華邦電（2344）  
+影片連結：<a href="https://youtube.com/watch?v=AlyX5mau" target="_blank" rel="noopener noreferrer" class="text-link">https://youtube.com/watch?v=AlyX5mau</a>1FU  
+
+錢線百分百重點主題整理：  
+
+- 「520行情與政策受惠股大風吹？」  
+提醒520行情聚焦選股，政策聚焦綠能、國防、AI、低軌衛星、量子電腦等五大信賴產業。  
+重點看多：奇偶（3356）（安控自主化）、事欣科（3376）（軍工低軌衛星）、國碩（2406）（綠能與液冷）、金寶（2312）（量子電腦布局）。  
+影片連結：<a href="https://youtube.com/watch?v=qMM" target="_blank" rel="noopener noreferrer" class="text-link">https://youtube.com/watch?v=qMM</a>0Bat9vlY  
+
+- 「華許上任Fed恐變天! 降息路線要翻盤了?」  
+分析華許可能帶來的Fed政策轉變，降息空間增加，長期通膨標準調整降低升息壓力，有助美股利多展開。  
+影片連結：<a href="https://youtube.com/watch?v=SBJvDiuVfik" target="_blank" rel="noopener noreferrer" class="text-link">https://youtube.com/watch?v=SBJvDiuVfik</a>  
+
+- 「IC設計大復活! 下一檔漲倍股在哪?」  
+IC設計族群憑藉ASIC及矽智財題材爆發，主力股聯發科、創意、世芯-KY走勢強勁，邊緣AI與電源管理IC成新焦點。低本益股如聯陽（3014）、茂達（3370）具足追蹤價值。  
+影片連結：<a href="https://youtube.com/watch?v=GjRtKda7" target="_blank" rel="noopener noreferrer" class="text-link">https://youtube.com/watch?v=GjRtKda7</a>05A  
+
+- 「台股4萬點別亂追! 下一波補漲股曝光!」  
+高檔震盪在所難免，建議轉向中小型具基本面支撐且估值合理的補漲股布局，功率元件與低軌衛星題材值得關注。  
+重點看多股票包括：麗正（2302）、建漢（3062）、優群（8099）、雷科（2461）。
+
+影片連結：<a href="https://youtube.com/watch?v=sSKHJvPN9-8" target="_blank" rel="noopener noreferrer" class="text-link">https://youtube.com/watch?v=sSKHJvPN9-8</a>  
+
+- 「電力革命進行式! 如何迎上飆股浪潮?」  
+電源管理IC及BBU商機持續爆發，台達電、光寶科、新盛力等強勢表現，投資策略聚焦於AI伺服器電力架構演進與元件擴產。  
+影片連結：<a href="https://youtube.com/watch?v=Y84BJpZ8Ryo" target="_blank" rel="noopener noreferrer" class="text-link">https://youtube.com/watch?v=Y84BJpZ8Ryo</a>  
+
+- 「台灣正在變亞洲金庫? 台股受惠股出列!」  
+亞洲資產管理中心成功影響台股資金結構，高資產族群資金回流帶動金融股及新創投資增溫，家族辦公室與普惠金融成核心驅動。  
+影片連結：<a href="https://youtube.com/watch?v=3ntzqEiD7o4" target="_blank" rel="noopener noreferrer" class="text-link">https://youtube.com/watch?v=3ntzqEiD7o4</a>  
+
+- 「輝達加碼康寧 供應鏈誰&quot;黃&quot;袍加身?」  
+輝達大舉投資康寧擴大AI光學傳輸產能，台灣供應鏈如統新、沛亨、貿聯-KY受惠康寧擴產計劃成長，光纖及光學元件需求急遽放大。  
+影片連結：<a href="https://youtube.com/watch?v=axEIzN3faxU" target="_blank" rel="noopener noreferrer" class="text-link">https://youtube.com/watch?v=axEIzN3faxU</a>  
+
+4️⃣ 補充特別觀點：  
+- 記憶體長期供需矛盾嚴重，產能擴增困難，助推價格與股價持續向上。  
+- 台股高檔震盪整理階段，非「停滯危機」，而是資金重新輪動至中小型股及主動型ETF，引領下一波行情。  
+- 美國聯準會新主席華許可能改採更長期通膨指標（截尾平均PCE），開啟貨幣政策轉向寬鬆，全球資金環境可能受益。  
+- IC設計產業隨先進製程推進和AI算力需求倍增，開始從純硬體開發蚕食至權利金模式，營運模式及估值均大幅提升。  
+- 亞洲資產管理中心推動台灣金融生態轉型，涵蓋高資產族群理財、小資族普惠金融及中小企業資金活絡，長線助益台股資金面。  
+- 康寧及其台灣供應鏈俯瞰AI光纖基礎建設新機會，具備技術優勢與擴產潛力，成為外資關注焦點。  
+
+━━━━━━━━━━━</div>
+  </div>
+</div>
+<footer>AI_Channel_Analysis &nbsp;·&nbsp; gpt-4.1-mini &nbsp;·&nbsp; 本報告由自動化系統生成，僅供參考，不構成投資建議</footer>
+
+<script>
+  var SIZE_KEY = 'report_font_size';
+
+  function setFont(size) {
+    document.body.className = 'font-' + size;
+    document.querySelectorAll('.fs-btn').forEach(function(b) {
+      b.classList.toggle('active', b.textContent === ({small:'小',normal:'中',large:'大'}[size]));
+    });
+    try { localStorage.setItem(SIZE_KEY, size); } catch(e) {}
+  }
+
+  // 頁面載入時恢復上次設定
+  (function() {
+    var saved = '';
+    try { saved = localStorage.getItem(SIZE_KEY) || 'normal'; } catch(e) { saved = 'normal'; }
+    setFont(saved);
+  })();
+</script>
+</body>
+</html>
