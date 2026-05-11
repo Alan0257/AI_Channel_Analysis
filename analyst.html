@@ -1,1 +1,285 @@
-<html></html>
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>台股財經分析｜分析師速報</title>
+<style>
+  :root {
+    --bg:#0b0f1c;--bg2:#111627;--bg3:#18203a;
+    --border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.13);
+    --text:#dde2ef;--text2:#8b95ae;--text3:#4e566a;
+    --accent:#3b82f6;--accent-dim:rgba(59,130,246,0.12);
+    --green:#10b981;--green-dim:rgba(16,185,129,.12);
+    --red:#f87171;--red-dim:rgba(248,113,113,.12);
+    --amber:#fbbf24;--amber-dim:rgba(251,191,36,.12);
+    --fs-small:13px;--fs-normal:15px;--fs-large:18px;
+    --fs-body: var(--fs-normal);
+  }
+  body.font-small { --fs-body: var(--fs-small); }
+  body.font-normal { --fs-body: var(--fs-normal); }
+  body.font-large { --fs-body: var(--fs-large); }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;min-height:100vh;line-height:1.75;}
+
+  /* top bar */
+  .top-bar{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 clamp(1rem,4vw,2.5rem);position:sticky;top:0;z-index:50;}
+  .top-bar-inner{max-width:820px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:52px;gap:.75rem;}
+  .brand{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+  .brand-chip{padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;background:var(--accent-dim);color:var(--accent);border:1px solid var(--accent);opacity:.85;}
+  .brand-name{font-size:14px;font-weight:600;color:var(--text2);letter-spacing:.02em;}
+
+  /* 字體切換按鈕 */
+  .font-switcher{display:flex;align-items:center;gap:4px;margin-left:auto;}
+  .fs-btn{
+    padding:4px 10px;border-radius:5px;border:1px solid var(--border2);
+    background:transparent;color:var(--text3);cursor:pointer;
+    font-size:12px;font-family:inherit;transition:all .15s;
+    white-space:nowrap;
+  }
+  .fs-btn:hover{color:var(--text2);border-color:var(--accent);}
+  .fs-btn.active{background:var(--accent-dim);color:var(--accent);border-color:var(--accent);}
+
+  .meta-time{font-size:12px;color:var(--text3);display:flex;align-items:center;gap:6px;flex-shrink:0;}
+  .live-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 2.4s ease-in-out infinite;}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+
+  /* hero */
+  .hero{max-width:820px;margin:0 auto;padding:clamp(2rem,5vw,3.5rem) clamp(1rem,4vw,2.5rem) 1.5rem;}
+  .hero-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;display:flex;align-items:center;gap:10px;}
+  .hero-eyebrow::after{content:'';flex:1;height:1px;background:var(--accent);opacity:.25;max-width:120px;}
+  .hero-title{font-size:clamp(22px,5vw,32px);font-weight:800;color:var(--text);line-height:1.25;margin-bottom:10px;}
+  .hero-date{font-size:14px;color:var(--text2);}
+
+  .divider{max-width:820px;margin:0 auto;padding:0 clamp(1rem,4vw,2.5rem);}
+  .divider hr{border:none;border-top:1px solid var(--border);margin:1.5rem 0;}
+  .content{max-width:820px;margin:0 auto;padding:0 clamp(1rem,4vw,2.5rem) 3rem;display:flex;flex-direction:column;gap:1.25rem;}
+
+  /* card */
+  .card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;overflow:hidden;}
+  .card-header{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;}
+  .card-icon{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+  .card-icon.accent{background:var(--accent-dim);}
+  .card-icon.green{background:var(--green-dim);}
+  .card-icon.red{background:var(--red-dim);}
+  .card-icon.amber{background:var(--amber-dim);}
+  .card-title{font-size:14px;font-weight:600;color:var(--text);}
+
+  /* card-body 字體跟著 CSS var 走 */
+  .card-body{
+    padding:18px 20px;
+    font-size:var(--fs-body);
+    color:var(--text2);
+    line-height:1.9;
+    white-space:pre-wrap;
+    word-break:break-word;
+  }
+
+  /* 超連結樣式 */
+  .text-link{
+    color:var(--accent);
+    text-decoration:underline;
+    text-underline-offset:3px;
+    word-break:break-all;
+  }
+  .text-link:hover{opacity:.8;}
+
+  .info-row{display:flex;flex-wrap:wrap;gap:.75rem 1.5rem;padding:12px 18px;background:var(--bg3);border-bottom:1px solid var(--border);font-size:12px;color:var(--text3);}
+  .info-row span{display:flex;align-items:center;gap:5px;}
+  .info-row strong{color:var(--text2);font-weight:500;}
+  footer{border-top:1px solid var(--border);padding:1.25rem clamp(1rem,4vw,2.5rem);text-align:center;font-size:12px;color:var(--text3);max-width:820px;margin:0 auto;}
+
+  @media(max-width:480px){
+    .brand-name{display:none;}
+    .fs-btn{padding:4px 8px;}
+  }
+</style>
+</head>
+<body class="font-normal">
+
+<div class="top-bar">
+  <div class="top-bar-inner">
+    <div class="brand">
+      <span class="brand-chip">Analyst</span>
+      <span class="brand-name">台股財經分析</span>
+    </div>
+
+    <div class="font-switcher">
+      <button class="fs-btn" onclick="setFont('small')">小</button>
+      <button class="fs-btn active" onclick="setFont('normal')">中</button>
+      <button class="fs-btn" onclick="setFont('large')">大</button>
+    </div>
+
+    <div class="meta-time">
+      <span class="live-dot"></span>
+      2026/05/11 下午08:00
+    </div>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="hero-eyebrow">Daily Analyst Report</div>
+  <h1 class="hero-title">分析師速報</h1>
+  <p class="hero-date">2026-05-11｜市場觀點彙整版</p>
+</div>
+<div class="divider"><hr></div>
+<div class="content">
+
+  <div class="card">
+    <div class="info-row">
+      <span>模式 <strong>weekday_2000</strong></span>
+      <span>更新 <strong>2026/05/11 下午08:00</strong></span>
+    </div>
+    <div class="card-header">
+      <div class="card-icon accent">📍</div>
+      <span class="card-title">今日市場核心摘要</span>
+    </div>
+    <div class="card-body">🚨《分析師速報》  
+📅 2026-05-11｜市場觀點彙整版  
+━━━━━━━━━━━  
+
+【第一則訊息｜📍今日市場核心摘要】  
+1️⃣ 節目發布日期皆為2026-05-11，符合今日更新標準。  
+
+2️⃣ 大盤整體看法彙整：  
+- **郭哲榮**：認為記憶體族群強勢回歸，個股如群聯、南亞科鎖漲停，IC設計股聯發科已大漲逾130%，但台積電因訂單被Intel部分搶單，短線表現疲弱。分析師強調會員操作全數獲利，獲利能力超群，認為台積電貴且短線調整正常，記憶體是未來主軸，熱度不容忽視。  
+影片連結：<a href="https://youtube.com/watch?v=CS-BiuYQxI8" target="_blank" rel="noopener noreferrer" class="text-link">https://youtube.com/watch?v=CS-BiuYQxI8</a>  
+
+- **何基鼎**：台股由聯發科領漲，盤中一度漲逾400點，但聯發科本益比達60倍，市場對泡沫疑慮存在，不過記憶體股南亞科、華邦電、群聯等仍有漲停潮。建議抱牢強勢股並留意矽光子族群與MSCI調整，提醒投資人不應被本益比等數字綁住，重點是供需及籌碼面。  
+影片連結：<a href="https://youtube.com/watch?v=kvb" target="_blank" rel="noopener noreferrer" class="text-link">https://youtube.com/watch?v=kvb</a>0Y21tTmU  
+
+- **江國中**：強調台股持續多頭格局，4月底缺口持續放大並伴隨大洗盤，洗盤後漲勢更強，特別看好記憶體及低基期飆股，並提醒反彈不可盲目追高，應掌握輪動節奏持股。美空頭恐慌言論不足信，台股獲利大增且AI大共振正持續，低基期族群表現優異，未來3個月仍有暴利行情。  
+影片連結：<a href="https://youtube.com/watch?v=8OW-U_qLgS8" target="_blank" rel="noopener noreferrer" class="text-link">https://youtube.com/watch?v=8OW-U_qLgS8</a>  
+
+- **謝晨彥**：認為台積電仍是大盤壓抑點，但整體科技股走強，IC設計與記憶體齊揚，聯發科未來仍有成長空間，記憶體長多趨勢明確。建議逢回加碼低基期、高成長個股，以耐心和紀律持續布局，避免追高殺低。  
+影片連結：<a href="https://youtube.com/watch?v=5" target="_blank" rel="noopener noreferrer" class="text-link">https://youtube.com/watch?v=5</a>1PZny2783Y  
+
+- **鐘崑禎**：美國CPI將於明晚公布，可能帶來短期震盪但不會根本改變多頭格局。台股近期雖無新高，但個股多頭氣氛濃厚，尤其櫃買指數創新高。台積電短暫拉回不改多頭趨勢，產業獲利持續上修。強調AI工業革命正蓬勃發展，建議積極參與，不必恐慌未來調整。
+
+影片連結：<a href="https://youtube.com/watch?v=riL95urATn" target="_blank" rel="noopener noreferrer" class="text-link">https://youtube.com/watch?v=riL95urATn</a>0  
+
+- **林鈺凱**：台股高檔震盪，認為45000及50000點目標可期。記憶體與被動元件成為雙主流，聯發科帶動IC設計股票反彈。MSCI權重調整預期將帶來資金利多。操作上強調買在技術及籌碼支撐點，逢回加碼低基期個股。CPO及散熱族群近期反彈，也值得關注。  
+影片連結：<a href="https://youtube.com/watch?v=ao6SbMBAWoc" target="_blank" rel="noopener noreferrer" class="text-link">https://youtube.com/watch?v=ao6SbMBAWoc</a>  
+
+- **顧奎國**：發布日期為今天，主要介紹阪田戰法選股低接卡位策略，強調提早進場把握最佳投資機會。影片無字幕細節，核心為戰法應用。  
+影片連結：<a href="https://youtube.com/watch?v=OIxix6E29RQ" target="_blank" rel="noopener noreferrer" class="text-link">https://youtube.com/watch?v=OIxix6E29RQ</a>  
+
+━━━━━━━━━━━</div>
+  </div>
+
+  <div class="card">
+    <div class="info-row">
+      <span>模式 <strong>weekday_2000</strong></span>
+      <span>更新 <strong>2026/05/11 下午08:00</strong></span>
+    </div>
+    <div class="card-header">
+      <div class="card-icon red">📌</div>
+      <span class="card-title">投資人必看重點</span>
+    </div>
+    <div class="card-body">3️⃣ 三個及以上節目看多或看空的股票：  
+- **看多：**  
+  - 聯發科 2454  
+  - 群聯 8299  
+  - 南亞科 2408  
+  - 華邦電 2344  
+  - 世芯KY 3661  
+  - 創意 3443  
+  - 昇達科 3491  
+  - 信昌電 6173  
+  - 臻鼎 4958  
+  - 矽力KY 6415  
+
+- **看空：**  
+  - 台積電 2330 （郭哲榮、謝晨彥、鐘崑禎、何基鼎皆提及短線看壞或不建議追高）  
+  - 緯創 3231 （郭哲榮、謝晨彥兩位提及走弱）  
+
+4️⃣ 分析師個別看法整理：  
+
+- **郭哲榮**  
+  - 看多：群聯(記憶體回來了)、南亞科、聯發科（會員大賺130%）、環球晶、精材、華新科、廣達、鴻海(老AI中鴻海、廣達跟隨漲)。  
+  - 看空：台積電（估值偏高、被Intel搶訂單影響）、緯創（獨自回檔）。  
+  - 原因：技術面、籌碼面強烈，並以會員操作實績為證，其中台積電估值已不合理且壓制大盤。  
+
+- **何基鼎**  
+  - 看多：聯發科（雖本益比高但趨勢仍強）、記憶體族群（南亞科、華邦電、群聯）、矽光子類股、世芯KY、創意。  
+  - 看空/謹慎：聯發科本益比偏高，不建議追高，要抱牢強勢股、換弱勢股。  
+  - 原因：供需與籌碼才是主導股價，提醒輪動與MSCI權重變化的重要性。  
+
+- **江國中**  
+  - 看多：低基期記憶體（南亞科、華邦電）、太空股昇達科、電力股新盛力、IC設計智原、台股整體多頭輪動。  
+  - 看空：未明顯看空，但提防錯過翻倍飆股與不宜追高。  
+  - 原因：強調人工智慧大共振及高獲利中小股輪動新機會。  
+
+- **謝晨彥**  
+  - 看多：聯發科、創意、世芯、記憶體族群（群聯、南亞科、華邦電）、ASIC、IC設計、設備股（家登）、電源管理IC（矽力KY）、被動元件（信昌電、華新科）。  
+  - 看空：台積電短線疲弱，緯創因營收月減略弱。  
+  - 原因：基本面向好，資金流入，且籌碼技術良好，建議逢低佈局具成長股。  
+
+- **鐘崑禎**
+
+- 看多：信昌電（持續漲停）、華新科、群創、被動元件，以及低軌衛星、面板驅動IC、成熟製程、記憶體品種（華邦電、南亞科、旺宏、群聯）、昇達科、啟碁、健策、奇鋐等個股。  
+  - 看空：暫未強烈看空，認為CPI不會破壞多頭格局。  
+  - 原因：美股續創高帶動，櫃買指數多頭強勁，短期CPI事件屬震盪非趨勢轉折。  
+
+- **林鈺凱**  
+  - 看多：聯發科、群聯、南亞科、華邦電、世芯KY、創意、矽力KY、被動元件強檔（信昌電、禾伸堂）、CPO（采鈺、訊芯、穩懋）、散熱（健策、奇鋐）、黑馬工業電腦及面板股。  
+  - 看空：十銓因4月營收大幅下滑短線承壓。  
+  - 原因：強調技術面、基本面與籌碼面整合，低基期及強勢股優先，提醒逢回找買點。  
+
+- **顧奎國**  
+  - 主推阪田戰法低接卡位，對個股看法不詳，但強調提前進場和技術策略。  
+
+5️⃣ 特別觀點補充：  
+- 郭哲榮獨到見解：  
+  - 每一檔會員交易皆獲利，聲稱操作模式無人可比，會員稱「哲哲是財神爺」。  
+  - 台積電短期弱勢是因為美國支持Intel搶單，10年內仍具競爭力，長期需留意地緣政治危機。  
+  - 鼓勵投資會員加入並重視個股輪動，避免追高。  
+
+- 何基鼎強調：  
+  - 投資不可依賴表面本益比數字，實質供需與籌碼才是股價決定因素。  
+  - 主動式ETF募集帶來資金動能，MSCI調整值得關注。  
+  - 矽光子族群休息快結束，將是一波新主流。  
+
+- 江國中重點：  
+  - AI共振賦能台股低基期成長股，融資與外資回補仍有大量空間，OTC指數走勢強勁。  
+  - 強調輪動與買點選擇，反覆洗盤後爆發行情。  
+
+- 鐘崑禎提醒：  
+  - 美國CPI公布可能引發短暫波動，但基本面與AI趨勢決定台股多頭不變。  
+  - 工業革命視AI為第四次革命，帶來新一波財富機會。  
+  - 推薦逢低進場並看長線持續向好。  
+
+- 林鈺凱補充：  
+  - 目前龍頭記憶體股群聯、南亞科與華邦電重新進入多頭區間，宜逢回布局。  
+  - CPO、散熱及被動元件部分股價調整為買點，持續看好。
+
+- 重申買股不追高、不殺低，注重整合的技術、籌碼與基本面分析。  
+
+━━━━━━━━━━━  
+以上為今日6位分析師對於台股最新盤勢與個股佈局之專業見解，供投資人參考。  
+祝投資順利，財源廣進！</div>
+  </div>
+</div>
+<footer>AI_Channel_Analysis &nbsp;·&nbsp; gpt-4.1-mini &nbsp;·&nbsp; 本報告由自動化系統生成，僅供參考，不構成投資建議</footer>
+
+<script>
+  var SIZE_KEY = 'report_font_size';
+
+  function setFont(size) {
+    document.body.className = 'font-' + size;
+    document.querySelectorAll('.fs-btn').forEach(function(b) {
+      b.classList.toggle('active', b.textContent === ({small:'小',normal:'中',large:'大'}[size]));
+    });
+    try { localStorage.setItem(SIZE_KEY, size); } catch(e) {}
+  }
+
+  // 頁面載入時恢復上次設定
+  (function() {
+    var saved = '';
+    try { saved = localStorage.getItem(SIZE_KEY) || 'normal'; } catch(e) { saved = 'normal'; }
+    setFont(saved);
+  })();
+</script>
+</body>
+</html>
