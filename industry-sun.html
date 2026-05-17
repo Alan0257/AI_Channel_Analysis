@@ -8,30 +8,55 @@
   :root {
     --bg:#0b0f1c;--bg2:#111627;--bg3:#18203a;
     --border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.13);
-    --text:#dde2ef;--text2:#8b95ae;--text3:#4e566a;
+    --text:#edf0f7;--text2:#b8c0d4;--text3:#6b7590;
     --accent:#f59e0b;--accent-dim:rgba(245,158,11,0.12);
     --green:#10b981;--green-dim:rgba(16,185,129,.12);
     --red:#f87171;--red-dim:rgba(248,113,113,.12);
     --amber:#fbbf24;--amber-dim:rgba(251,191,36,.12);
+    --fs-small:13px;--fs-normal:15px;--fs-large:18px;
+    --fs-body: var(--fs-normal);
   }
+  body.font-small { --fs-body: var(--fs-small); }
+  body.font-normal { --fs-body: var(--fs-normal); }
+  body.font-large { --fs-body: var(--fs-large); }
+
   *{margin:0;padding:0;box-sizing:border-box;}
   body{background:var(--bg);color:var(--text);font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;min-height:100vh;line-height:1.75;}
+
+  /* top bar */
   .top-bar{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 clamp(1rem,4vw,2.5rem);position:sticky;top:0;z-index:50;}
-  .top-bar-inner{max-width:820px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:52px;}
-  .brand{display:flex;align-items:center;gap:10px;}
+  .top-bar-inner{max-width:820px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:52px;gap:.75rem;}
+  .brand{display:flex;align-items:center;gap:10px;flex-shrink:0;}
   .brand-chip{padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;background:var(--accent-dim);color:var(--accent);border:1px solid var(--accent);opacity:.85;}
   .brand-name{font-size:14px;font-weight:600;color:var(--text2);letter-spacing:.02em;}
-  .meta-time{font-size:12px;color:var(--text3);display:flex;align-items:center;gap:6px;}
+
+  /* 字體切換按鈕 */
+  .font-switcher{display:flex;align-items:center;gap:4px;margin-left:auto;}
+  .fs-btn{
+    padding:4px 10px;border-radius:5px;border:1px solid var(--border2);
+    background:transparent;color:var(--text3);cursor:pointer;
+    font-size:12px;font-family:inherit;transition:all .15s;
+    white-space:nowrap;
+  }
+  .fs-btn:hover{color:var(--text2);border-color:var(--accent);}
+  .fs-btn.active{background:var(--accent-dim);color:var(--accent);border-color:var(--accent);}
+
+  .meta-time{font-size:12px;color:var(--text3);display:flex;align-items:center;gap:6px;flex-shrink:0;}
   .live-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 2.4s ease-in-out infinite;}
   @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+
+  /* hero */
   .hero{max-width:820px;margin:0 auto;padding:clamp(2rem,5vw,3.5rem) clamp(1rem,4vw,2.5rem) 1.5rem;}
   .hero-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;display:flex;align-items:center;gap:10px;}
   .hero-eyebrow::after{content:'';flex:1;height:1px;background:var(--accent);opacity:.25;max-width:120px;}
   .hero-title{font-size:clamp(22px,5vw,32px);font-weight:800;color:var(--text);line-height:1.25;margin-bottom:10px;}
   .hero-date{font-size:14px;color:var(--text2);}
+
   .divider{max-width:820px;margin:0 auto;padding:0 clamp(1rem,4vw,2.5rem);}
   .divider hr{border:none;border-top:1px solid var(--border);margin:1.5rem 0;}
   .content{max-width:820px;margin:0 auto;padding:0 clamp(1rem,4vw,2.5rem) 3rem;display:flex;flex-direction:column;gap:1.25rem;}
+
+  /* card */
   .card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;overflow:hidden;}
   .card-header{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;}
   .card-icon{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
@@ -40,30 +65,63 @@
   .card-icon.red{background:var(--red-dim);}
   .card-icon.amber{background:var(--amber-dim);}
   .card-title{font-size:14px;font-weight:600;color:var(--text);}
-  .card-body{padding:18px 20px;font-size:14px;color:var(--text2);line-height:1.9;white-space:pre-wrap;word-break:break-word;}
+
+  /* card-body 字體跟著 CSS var 走 */
+  .card-body{
+    padding:18px 20px;
+    font-size:var(--fs-body);
+    color:var(--text2);
+    line-height:1.9;
+    white-space:pre-wrap;
+    word-break:break-word;
+  }
+
+  /* 超連結樣式 */
+  .text-link{
+    color:var(--accent);
+    text-decoration:underline;
+    text-underline-offset:3px;
+    word-break:break-all;
+  }
+  .text-link:hover{opacity:.8;}
+
   .info-row{display:flex;flex-wrap:wrap;gap:.75rem 1.5rem;padding:12px 18px;background:var(--bg3);border-bottom:1px solid var(--border);font-size:12px;color:var(--text3);}
   .info-row span{display:flex;align-items:center;gap:5px;}
   .info-row strong{color:var(--text2);font-weight:500;}
   footer{border-top:1px solid var(--border);padding:1.25rem clamp(1rem,4vw,2.5rem);text-align:center;font-size:12px;color:var(--text3);max-width:820px;margin:0 auto;}
+
+  @media(max-width:480px){
+    .brand-name{display:none;}
+    .fs-btn{padding:4px 8px;}
+  }
 </style>
 </head>
-<body>
+<body class="font-normal">
+
 <div class="top-bar">
   <div class="top-bar-inner">
     <div class="brand">
       <span class="brand-chip">Industry</span>
       <span class="brand-name">台股財經分析</span>
     </div>
+
+    <div class="font-switcher">
+      <button class="fs-btn" onclick="setFont('small')">小</button>
+      <button class="fs-btn active" onclick="setFont('normal')">中</button>
+      <button class="fs-btn" onclick="setFont('large')">大</button>
+    </div>
+
     <div class="meta-time">
       <span class="live-dot"></span>
-      2026/05/10 上午01:14
+      2026/05/17 下午08:00
     </div>
   </div>
 </div>
+
 <div class="hero">
   <div class="hero-eyebrow">Weekend Industry Report</div>
   <h1 class="hero-title">產業熱點報告｜週日</h1>
-  <p class="hero-date">2026-05-10｜資金流向與產業脈動</p>
+  <p class="hero-date">2026-05-17｜資金流向與產業脈動</p>
 </div>
 <div class="divider"><hr></div>
 <div class="content">
@@ -71,54 +129,61 @@
   <div class="card">
     <div class="info-row">
       <span>模式 <strong>weekend_2000</strong></span>
-      <span>更新 <strong>2026/05/10 上午01:14</strong></span>
+      <span>更新 <strong>2026/05/17 下午08:00</strong></span>
     </div>
     <div class="card-header">
       <div class="card-icon accent">🏭</div>
       <span class="card-title">產業觀察</span>
     </div>
-    <div class="card-body">🔬《產業熱點報告》
-📅 2026-05-10｜資金流向與產業脈動
-━━━━━━━━━━━
+    <div class="card-body">🔬《產業熱點報告》  
+📅 2026-05-17｜資金流向與產業脈動  
+━━━━━━━━━━━  
 
 【第一則訊息｜🏭產業觀察】  
-1️⃣ 本日各分析師節目內容普遍缺少具體資料與明確分析，無法就專業角度進行深入探討。針對提供節目清單與空白描述，整體觀察產業趨勢或個股動態尚無突破性資訊。  
-- 郭哲榮、何基鼎、江國中、謝晨彥、鐘崑禎、林鈺凱、顧奎國各分析師節目均未提供任何文字內容、分析要點或數據，無法提煉出關鍵洞見或趨勢判斷。  
-- 由此現況我們建議後續關注節目是否補充產業深度分析，尤其聚焦產業成熟度、政策面支持及技術創新影響。  
-- 產業研究需資訊充分為基礎，缺乏具象分析將影響投資決策精準度。若有更新將提供進一步解析。  
-
-影片連結：  
-- 郭哲榮：https://youtube.com/watch?v=  
-- 何基鼎：https://youtube.com/watch?v=  
-- 江國中：https://youtube.com/watch?v=  
-- 謝晨彥：https://youtube.com/watch?v=  
-- 鐘崑禎：https://youtube.com/watch?v=  
-- 林鈺凱：https://youtube.com/watch?v=  
-- 顧奎國：https://youtube.com/watch?v=  
-
-━━━━━━━━━━━━━
-⚠️ 今日無更新：郭哲榮、何基鼎、江國中、謝晨彥、鐘崑禎、林鈺凱、顧奎國</div>
+1️⃣ 林鈺凱分析師於2026年5月17日的節目《台股四大利空、行情四大皆空？週三之前這樣做就對了！》中，詳盡解析近期台股面臨的多重利空因素。林分析師指出，台股當前遭遇四大利空，包括國際經濟變數、政策不確定性、主要產業獲利下修及市場情緒偏弱，導致指數短期看似「四大皆空」，但他並非完全悲觀，反而從中提出「短線操作策略」，建議投資人布局應靈活調整持股結構，利用利空訊息作為短線介入的機會。林鈺凱強調，投資人應注重資金流動性及持股風險控管，重點關注具備基本面支撐、具備轉機題材的族群。節目中，他也解析目前市場內部結構性變化對行情可能產生的影響，並建議投資者密切觀察外資動向以及政策風向。此分析專業且具前瞻性，適合資深及中階投資人作為調整戰略參考。  
+🔗 節目連結：<a href="https://youtube.com/watch?v=KZ8rwfQWGNM" target="_blank" rel="noopener noreferrer" class="text-link">https://youtube.com/watch?v=KZ8rwfQWGNM</a>
+⚠️ 今日無更新：郭哲榮、何基鼎、江國中、謝晨彥、鐘崑禎、顧奎國</div>
   </div>
 
   <div class="card">
     <div class="info-row">
       <span>模式 <strong>weekend_2000</strong></span>
-      <span>更新 <strong>2026/05/10 上午01:14</strong></span>
+      <span>更新 <strong>2026/05/17 下午08:00</strong></span>
     </div>
     <div class="card-header">
       <div class="card-icon green">📈</div>
       <span class="card-title">資金與題材追蹤</span>
     </div>
-    <div class="card-body">2️⃣ 鑒於各分析師節目皆未提供具體內容，今日無法提列任何新興題材產業、關注股票代碼或新數據。  
-- 無分析師針對產業型態、資金流向或原料成本變動進行解析。  
-- 缺乏特定標的舉例，無法判定資金動向或短期對應產業輪動方向。  
-- 建議投資者仍應持續關注官方數據發布與後續專業節目內容補充，嚴謹追蹤市場動態與分段持股策略。  
+    <div class="card-body">2️⃣ 依林鈺凱分析師節目內容，本日核心討論聚焦以下產業與股票：  
+- **科技硬體產業**：由於外銷表現與美中關係波動，相關台系科技股如台積電（2330）面臨壓力，短期利空明顯；投資人應謹慎調整，等待營運韌性證明。  
+- **電子零組件**：隨著庫存調整逐步緩和，零組件業者有望在後市逐步回暖，個股如鴻海（2317）或可關注其成本控管及產品線調整情況。  
+- **傳產類股**：在經濟成長趨緩背景下，傳產企業獲利承壓，但受惠於政策支持與內需市場，部分標的如台塑化（6505）具備防守屬性。  
+此外，林鈺凱強調資金面仍相當重要，提醒投資人留意外資買賣超動態與成交量變化，尤其操作上建議布局防守為主並靈活退守。整體分析指出，當前市場結構多變，投資人應保持靈活的風險管理和動態調整能力。  
 
-※後續有具體分析可第一時間提供深度整理報告。  
+其他分析師如郭哲榮、何基鼎、江國中、謝晨彥、鐘崑禎及顧奎國，今日未提供內容及分析，故本報告僅依林鈺凱分析師資料整理。  
 
-━━━━━━━━━━━━━</div>
+━━━━━━━━━━━</div>
   </div>
 </div>
 <footer>AI_Channel_Analysis &nbsp;·&nbsp; gpt-4.1-mini &nbsp;·&nbsp; 本報告由自動化系統生成，僅供參考，不構成投資建議</footer>
+
+<script>
+  var SIZE_KEY = 'report_font_size';
+
+  function setFont(size) {
+    document.body.className = 'font-' + size;
+    document.querySelectorAll('.fs-btn').forEach(function(b) {
+      b.classList.toggle('active', b.textContent === ({small:'小',normal:'中',large:'大'}[size]));
+    });
+    try { localStorage.setItem(SIZE_KEY, size); } catch(e) {}
+  }
+
+  // 頁面載入時恢復上次設定
+  (function() {
+    var saved = '';
+    try { saved = localStorage.getItem(SIZE_KEY) || 'normal'; } catch(e) { saved = 'normal'; }
+    setFont(saved);
+  })();
+</script>
 </body>
 </html>
