@@ -1,1 +1,217 @@
-<html></html>
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>台股財經分析｜產業熱點報告｜週六</title>
+<style>
+  :root {
+    --bg:#0b0f1c;--bg2:#111627;--bg3:#18203a;
+    --border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.13);
+    --text:#edf0f7;--text2:#b8c0d4;--text3:#6b7590;
+    --accent:#f59e0b;--accent-dim:rgba(245,158,11,0.12);
+    --green:#10b981;--green-dim:rgba(16,185,129,.12);
+    --red:#f87171;--red-dim:rgba(248,113,113,.12);
+    --amber:#fbbf24;--amber-dim:rgba(251,191,36,.12);
+    --fs-small:13px;--fs-normal:15px;--fs-large:18px;
+    --fs-body: var(--fs-normal);
+  }
+  body.font-small { --fs-body: var(--fs-small); }
+  body.font-normal { --fs-body: var(--fs-normal); }
+  body.font-large { --fs-body: var(--fs-large); }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;min-height:100vh;line-height:1.75;}
+
+  /* top bar */
+  .top-bar{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 clamp(1rem,4vw,2.5rem);position:sticky;top:0;z-index:50;}
+  .top-bar-inner{max-width:820px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:52px;gap:.75rem;}
+  .brand{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+  .brand-chip{padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;background:var(--accent-dim);color:var(--accent);border:1px solid var(--accent);opacity:.85;}
+  .brand-name{font-size:14px;font-weight:600;color:var(--text2);letter-spacing:.02em;}
+
+  /* 字體切換按鈕 */
+  .font-switcher{display:flex;align-items:center;gap:4px;margin-left:auto;}
+  .fs-btn{
+    padding:4px 10px;border-radius:5px;border:1px solid var(--border2);
+    background:transparent;color:var(--text3);cursor:pointer;
+    font-size:12px;font-family:inherit;transition:all .15s;
+    white-space:nowrap;
+  }
+  .fs-btn:hover{color:var(--text2);border-color:var(--accent);}
+  .fs-btn.active{background:var(--accent-dim);color:var(--accent);border-color:var(--accent);}
+
+  .meta-time{font-size:12px;color:var(--text3);display:flex;align-items:center;gap:6px;flex-shrink:0;}
+  .live-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 2.4s ease-in-out infinite;}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+
+  /* hero */
+  .hero{max-width:820px;margin:0 auto;padding:clamp(2rem,5vw,3.5rem) clamp(1rem,4vw,2.5rem) 1.5rem;}
+  .hero-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;display:flex;align-items:center;gap:10px;}
+  .hero-eyebrow::after{content:'';flex:1;height:1px;background:var(--accent);opacity:.25;max-width:120px;}
+  .hero-title{font-size:clamp(22px,5vw,32px);font-weight:800;color:var(--text);line-height:1.25;margin-bottom:10px;}
+  .hero-date{font-size:14px;color:var(--text2);}
+
+  .divider{max-width:820px;margin:0 auto;padding:0 clamp(1rem,4vw,2.5rem);}
+  .divider hr{border:none;border-top:1px solid var(--border);margin:1.5rem 0;}
+  .content{max-width:820px;margin:0 auto;padding:0 clamp(1rem,4vw,2.5rem) 3rem;display:flex;flex-direction:column;gap:1.25rem;}
+
+  /* card */
+  .card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;overflow:hidden;}
+  .card-header{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;}
+  .card-icon{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+  .card-icon.accent{background:var(--accent-dim);}
+  .card-icon.green{background:var(--green-dim);}
+  .card-icon.red{background:var(--red-dim);}
+  .card-icon.amber{background:var(--amber-dim);}
+  .card-title{font-size:14px;font-weight:600;color:var(--text);}
+
+  /* card-body 字體跟著 CSS var 走 */
+  .card-body{
+    padding:18px 20px;
+    font-size:var(--fs-body);
+    color:var(--text2);
+    line-height:1.9;
+    white-space:pre-wrap;
+    word-break:break-word;
+  }
+
+  /* 超連結樣式 */
+  .text-link{
+    color:var(--accent);
+    text-decoration:underline;
+    text-underline-offset:3px;
+    word-break:break-all;
+  }
+  .text-link:hover{opacity:.8;}
+
+  .info-row{display:flex;flex-wrap:wrap;gap:.75rem 1.5rem;padding:12px 18px;background:var(--bg3);border-bottom:1px solid var(--border);font-size:12px;color:var(--text3);}
+  .info-row span{display:flex;align-items:center;gap:5px;}
+  .info-row strong{color:var(--text2);font-weight:500;}
+  footer{border-top:1px solid var(--border);padding:1.25rem clamp(1rem,4vw,2.5rem);text-align:center;font-size:12px;color:var(--text3);max-width:820px;margin:0 auto;}
+
+  @media(max-width:480px){
+    .brand-name{display:none;}
+    .fs-btn{padding:4px 8px;}
+  }
+</style>
+</head>
+<body class="font-normal">
+
+<div class="top-bar">
+  <div class="top-bar-inner">
+    <div class="brand">
+      <span class="brand-chip">Industry</span>
+      <span class="brand-name">台股財經分析</span>
+    </div>
+
+    <div class="font-switcher">
+      <button class="fs-btn" onclick="setFont('small')">小</button>
+      <button class="fs-btn active" onclick="setFont('normal')">中</button>
+      <button class="fs-btn" onclick="setFont('large')">大</button>
+    </div>
+
+    <div class="meta-time">
+      <span class="live-dot"></span>
+      2026/05/23 下午08:00
+    </div>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="hero-eyebrow">Weekend Industry Report</div>
+  <h1 class="hero-title">產業熱點報告｜週六</h1>
+  <p class="hero-date">2026-05-23｜資金流向與產業脈動</p>
+</div>
+<div class="divider"><hr></div>
+<div class="content">
+
+  <div class="card">
+    <div class="info-row">
+      <span>模式 <strong>weekend_2000</strong></span>
+      <span>更新 <strong>2026/05/23 下午08:00</strong></span>
+    </div>
+    <div class="card-header">
+      <div class="card-icon accent">🏭</div>
+      <span class="card-title">產業觀察</span>
+    </div>
+    <div class="card-body">🔬《產業熱點報告》  
+📅 2026-05-23｜資金流向與產業脈動  
+━━━━━━━━━━━
+
+【第一則訊息｜🏭產業觀察】  
+1️⃣ 郭哲榮｜主動式ETF風險及台股現狀解析  
+郭哲榮針對近期台股主動式ETF特別是00403A主動統一升級50的破發現象進行深入分析，指出雖然該ETF在上市前募集了高達791億元，且上市後規模迅速擴大至1553億元，甚至位居主動式ETF第二大，但因過於熱門，容易被市場狙擊，尤其籌碼分散且散戶多，以小資族為主，形成極不穩定的賣壓。  
+他並透過00940及00981A歷史案列比較，強調基金經理人的選股能力差異對ETF績效影響甚鉅，且主動式ETF須承擔高管理費與更換基金經理人的風險，強調數據顯示90%的主動式ETF長期表現不如被動ETF。郭哲榮推崇低費用市值型ETF如0050，為投資者提供更穩健的選擇，且提醒市場行情的好壞對績效影響甚大，基金經理人在行情轉弱時不會主動建議贖回，投資者風險意識不可忽視。  
+影片連結：<a href="https://youtube.com/watch?v=VTKsuzgNSLk" target="_blank" rel="noopener noreferrer" class="text-link">https://youtube.com/watch?v=VTKsuzgNSLk</a>  
+
+2️⃣ 何基鼎｜台股與美股連動 盤勢與個股操作建議  
+何基鼎強調台股近期再創歷史新高，受美股半導體及科技股強勁支撐，尤其AI及半導體產業動能強。他針對台積電、聯發科及國巨三大權值股分析，推薦IC設計股如聯發科較具買進空間，而國巨短線漲多須防範獲利了結賣壓。  
+他指出AMD概念股如日月光（3711）、京元電（2449）、力成（6239）、嘉澤（3533）、譜瑞（未掛牌）、祥碩等均表現強勢，且先進封裝及FOPLP技術為主要驅動力。並解析技術面如「N字攻擊」理論不足以作為唯一判斷，強調基本面及資金面才是主導多頭走勢的關鍵。  
+此外，他看好美國外資持續推動台股ETF及股東會行情，提醒投資人應在利多消息公佈前提前佈局。  
+影片連結：<a href="https://youtube.com/watch?v=UPVlLC2dQ3c" target="_blank" rel="noopener noreferrer" class="text-link">https://youtube.com/watch?v=UPVlLC2dQ3c</a>  
+
+3️⃣ 江國中｜AI產業共振＋Rubin機櫃出貨，帶動下半年爆發性成長
+
+江國中（江江）從台股大V轉行情切入，聚焦AI產業鏈帶動半導體、記憶體、被動元件、PCB等族群持續向上。特別強調輝達Rubin新機櫃下半年量產，單價翻倍，機櫃體積擴大數倍，需用記憶體、PCB、載板、MLCC等零組件產值暴增2至4倍。這將帶動相關台廠如華新科、欣興、南亞科、臻鼎、景碩等公司營收與利潤大幅跳升。  
+他深入分析AI帶來Token成本大幅降低與使用需求激增，投資氛圍進入黃金十年，並運用大量數據驗證AI超級循環已成形，市場資金跟進明顯。江國中重點提醒投資人不可怕震盪噴高後追高，反而應在拉回時積極布局，長線持股方有望享受暴利。  
+此外，他指出公債殖利率的波動與技術分析的多空訊號並非絕對，多頭基本面、資金面尚未改變，台股持續創新高仍具動能。  
+影片連結：<a href="https://youtube.com/watch?v=FW2qKSDNShs" target="_blank" rel="noopener noreferrer" class="text-link">https://youtube.com/watch?v=FW2qKSDNShs</a>
+⚠️ 今日無更新：謝晨彥、鐘崑禎、林鈺凱、顧奎國</div>
+  </div>
+
+  <div class="card">
+    <div class="info-row">
+      <span>模式 <strong>weekend_2000</strong></span>
+      <span>更新 <strong>2026/05/23 下午08:00</strong></span>
+    </div>
+    <div class="card-header">
+      <div class="card-icon green">📈</div>
+      <span class="card-title">資金與題材追蹤</span>
+    </div>
+    <div class="card-body">2️⃣  
+- 主要聚焦產業：  
+  - 主動式ETF市場萎縮與散戶風險警示（00403A、00940、00981A）  
+  - 半導體封裝與IC設計（台積電2330、聯發科2454、日月光3711、京元電2449、力成6239、嘉澤3533、譜瑞、祥碩）  
+  - AI基礎建設與伺服器機櫃產業（輝達Rubin UCS/Ultra等）  
+  - 記憶體、PCB、被動元件與載板（南亞科2408、華邦電2344、欣興3037、臻鼎4958、景碩3189、華新科2492、蜜望實）  
+  - 太空與低軌衛星概念（昇達科3491、兆赫、群創3481）  
+  - 電力與散熱系統供應商（強茂、台半）  
+
+- 新數據與觀察：  
+  - 主動式ETF破發主因為散戶集中、高度競爭狙擊，資金流動性風險仍高，長期績效低於被動ETF標的（SPIVA報告支持）。  
+  - 半導體AI相關封裝及測試業務營收增長顯著，京元電AI/HPC占比由25%擬提升至70%，力成受惠FOPLP技術灼熱，帶動訂單與股價。  
+  - Rubin伺服器機櫃產值成長逾倍，帶動記憶體產值增435%，MLCC產值增286%，PCB產值增230%，載板產值增80%，成產業短期爆發熱點。  
+  - 台股營收與獲利成長強勁，Q1上市櫃公司營收1.56兆，季增21%、年增48%；四月失業率降至26年新低。  
+  - 美國未來5年AI資本支出預計增加7~8兆美元，全球經濟結構正向「Token Economy」轉型，助攻AI相關產業持續成長。  
+  - 股市資金面穩固，主動式ETF買盤強勁，及全球ETF將發行台股相關標的，外資進一步介入台股。  
+  - 近期多檔權值股及科技類股展現輪動上漲態勢，資金偏好IC設計股、先進製程及高毛利產業。  
+
+━━━━━━━━━━━  
+整體觀察：
+
+台股近期在全球AI熱潮與強勁基本面驅動下，多頭趨勢穩健，但市場震盪仍頻繁，主動式ETF投資風險高，建議聚焦具體產業成長動能，及具備核心競爭力的高成長股。短線震盪可視為布局良機，長線則持續關注AI伺服器新設備帶動的零組件產值爆發，與半導體製程、記憶體、PCB及被動元件的成長共振，預計下半年成為產業爆發亮點。投資者宜結合理性操作與基本面研究，掌握科技產業輪動的資金脈動。</div>
+  </div>
+</div>
+<footer>AI_Channel_Analysis &nbsp;·&nbsp; gpt-4.1-mini &nbsp;·&nbsp; 本報告由自動化系統生成，僅供參考，不構成投資建議</footer>
+
+<script>
+  var SIZE_KEY = 'report_font_size';
+
+  function setFont(size) {
+    document.body.className = 'font-' + size;
+    document.querySelectorAll('.fs-btn').forEach(function(b) {
+      b.classList.toggle('active', b.textContent === ({small:'小',normal:'中',large:'大'}[size]));
+    });
+    try { localStorage.setItem(SIZE_KEY, size); } catch(e) {}
+  }
+
+  // 頁面載入時恢復上次設定
+  (function() {
+    var saved = '';
+    try { saved = localStorage.getItem(SIZE_KEY) || 'normal'; } catch(e) { saved = 'normal'; }
+    setFont(saved);
+  })();
+</script>
+</body>
+</html>
